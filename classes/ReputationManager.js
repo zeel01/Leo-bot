@@ -86,7 +86,7 @@ export default class ReputationManager extends InteractionHandler {
 	async handleMessage(message) {
 		if ( message.author.bot          || // Skip if the sender is a bot.
 			!message.mentions.users.size || // Stop if there are no mentions. 
-			!message.type === 'REPLY' ||
+			message.type !== 'REPLY' ||
 			!this._testMessage(message)     // Test the message for triggers.
 		) return;
 
