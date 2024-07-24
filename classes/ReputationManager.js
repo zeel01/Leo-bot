@@ -97,7 +97,7 @@ export default class ReputationManager extends InteractionHandler {
 			users = [repliedTo.author];
 		}
 		users.push(...message.mentions.users.values());
-		users.filter(user => user.id != message.author.id);
+		users = users.filter(user => user.id != message.author.id);
 
 		// Return if there are no users
 		if (!users.length) return;
