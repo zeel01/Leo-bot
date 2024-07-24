@@ -94,12 +94,10 @@ export default class ReputationManager extends InteractionHandler {
 		let users = []
 		if (message.type === 'REPLY') {
 			const repliedTo = await message.fetchReference();
-			users = [repliedTo.author]
-				.filter(user => user.id != message.author.id);
-		} else {
-			users = [...message.mentions.users.values()]
-				.filter(user => user.id != message.author.id);
+			users = [repliedTo.author];
 		}
+		users.push(...message.mentions.users.values());
+		users.filter(user => user.id != message.author.id);
 
 		// Return if there are no users
 		if (!users.length) return;
