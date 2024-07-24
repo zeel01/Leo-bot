@@ -86,12 +86,19 @@ export default class ReputationManager extends InteractionHandler {
 	async handleMessage(message) {
 		if ( message.author.bot          || // Skip if the sender is a bot.
 			!message.mentions.users.size || // Stop if there are no mentions. 
+			!message.type === 'REPLY' ||
 			!this._testMessage(message)     // Test the message for triggers.
 		) return;
 
 		// Convert users to an array, and remove any mentions that are the author
-		const users = [...message.mentions.users.values()]
-			.filter(user => user.id != message.author.id);
+		let users = []
+		if (message.type === 'REPLY') {
+			const repliedTo = await message.fetchReference();
+			users = [repliedTo.author];
+		} else {
+			users = [...message.mentions.users.values()]
+				.filter(user => user.id != message.author.id);
+		}
 
 		// Return if there are no users
 		if (!users.length) return;
